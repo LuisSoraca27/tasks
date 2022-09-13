@@ -5,10 +5,10 @@ const statusExists = async (req, res, next) => {
     const { status } = req.params;
 
     if (
-      status == "active" ||
-      status == "completed" ||
-      status == "late" ||
-      status == "canceled"
+      status === "active" ||
+      status === "completed" ||
+      status === "late" ||
+      status === "cancelled"
     ) {
       next();
     } else {
@@ -25,14 +25,14 @@ const statusExists = async (req, res, next) => {
 const taskExist = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const task = Tasks.findOne({ where: { id } });
+    const task = await Tasks.findOne({ where: { id } });
     if (!task) {
       return res.status(404).json({
         status: "error",
         message: "task not found",
       });
     }
-    res.task = task;
+    req.task = task;
     next();
   } catch (error) {
     console.log(error);
